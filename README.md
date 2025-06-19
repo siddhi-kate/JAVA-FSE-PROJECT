@@ -15,15 +15,18 @@ This system is built using a microservices architecture, leveraging Spring Boot 
 The system is composed of the following microservices:
 ```mermaid
 graph TD
-    A[Client/User] --> B[API Gateway]
-    B --> C{Eureka Discovery Service}
-    B --> D[User Service]
-    B --> E[Vehicle Service]
-    D --> F[H2 Database User]
-    E --> G[H2 Database Vehicle]
-    D -- Feign Client --> E
-    C -- Registers & Discovers --> D
-    C -- Registers & Discovers --> E
+    A[API Gateway] --> B[User Service]
+    B --> C[User Controller]
+    C --> D[User Service Layer]
+    D --> E[User Repository]
+    E --> F[H2 Database User]
+    D -- Feign Client --> G Vehicle Service 
+
+    subgraph User Service
+        C
+        D
+        E
+    end
 ```
 
 ### User Service
