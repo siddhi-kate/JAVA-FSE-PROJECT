@@ -1,116 +1,111 @@
-Project Overview
+# Vehicle Management System
 
-The Vehicle Management System is a microservices-based application designed to manage users and their associated vehicles. It consists of the following services:
+The Vehicle Management System is a microservices-based application designed to manage users and their associated vehicles. It comprises several interconnected services that work together to provide a comprehensive solution for vehicle and user management.
 
-User Service: Handles user-related operations such as registration, retrieval, and association with vehicles.
+---
 
-Vehicle Service: Manages vehicle-related operations such as adding vehicles and retrieving vehicle details.
+## Project Overview
 
-Eureka Discovery Service: Provides service discovery functionality for microservices.
+This system is built using a microservices architecture, leveraging Spring Boot and Spring Cloud to create a scalable and resilient application. The core functionalities include user registration and management, vehicle addition and retrieval, service discovery, and API routing.
 
-API Gateway: Acts as a single entry point for all microservices, enabling routing and load balancing.
+---
 
+## Architecture
 
+The system is composed of the following microservices:
 
-Architectures
+### User Service
 
-Microservices Architecture
+* **Description**: Handles all user-related operations, including registration, retrieval, and association with vehicles.
+* **Functionality**: Performs CRUD (Create, Read, Update, Delete) operations for users.
+* **Communication**: Communicates with the Vehicle Service using **Feign Client** to fetch vehicle-related data for a given user.
 
-User Service:
+### Vehicle Service
 
-Handles CRUD operations for users.
+* **Description**: Manages vehicle-related operations.
+* **Functionality**: Handles CRUD operations for vehicles and provides endpoints for retrieving vehicle details.
 
-Communicates with the Vehicle Service using Feign Client for vehicle-related data.
+### Eureka Discovery Service
 
-Vehicle Service:
+* **Description**: Provides service discovery functionality for all microservices.
+* **Functionality**: Enables service registration and discovery, ensuring dynamic scaling and fault tolerance within the microservices ecosystem.
 
-Handles CRUD operations for vehicles.
+### API Gateway
 
-Provides endpoints for retrieving vehicle details.
+* **Description**: Acts as a single entry point for all microservices.
+* **Functionality**: Routes incoming requests to the appropriate microservices, provides centralized authentication, and handles logging.
 
-Eureka Discovery Service:
+---
 
-Enables service registration and discovery.
+## Technology Stack
 
-Ensures dynamic scaling and fault tolerance.
+* **Programming Language**: Java
+* **Frameworks**: Spring Boot, Spring Cloud
+* **Database**: H2 (In-memory database)
+* **Service Discovery**: Eureka
+* **API Gateway**: Spring Cloud Gateway
+* **Build Tool**: Maven
 
-API Gateway:
+---
 
-Routes requests to appropriate microservices.
+## Database Table Design
 
-Provides centralized authentication and logging.
+### User Table
 
-Technology Stack
+| Column Name  | Data Type    | Constraints                  | Description                         |
+| :----------- | :----------- | :--------------------------- | :---------------------------------- |
+| `userId`     | `BIGINT`     | Primary Key, Auto-Increment  | Unique identifier for the user      |
+| `name`       | `VARCHAR(255)` | NOT NULL                     | Name of the user                    |
+| `email`      | `VARCHAR(255)` | NOT NULL, UNIQUE             | Email address of the user           |
+| `phone`      | `VARCHAR(15)`  | NOT NULL                     | Phone number of the user            |
+| `address`    | `VARCHAR(255)` |                              | Address of the user                 |
+| `passwordHash` | `VARCHAR(255)` | NOT NULL                     | Hashed password of the user         |
 
-Programming Language: Java
+### Vehicle Table
 
-Frameworks: Spring Boot, Spring Cloud
+| Column Name | Data Type    | Constraints                 | Description                       |
+| :---------- | :----------- | :-------------------------- | :-------------------------------- |
+| `vehicleId` | `BIGINT`     | Primary Key, Auto-Increment | Unique identifier for the vehicle |
+| `make`      | `VARCHAR(255)` | NOT NULL                    | Manufacturer of the vehicle       |
+| *(Additional vehicle details like model, year, etc., would be added here)* | | | |
 
-Database: H2 (In-memory database)
+---
 
-Service Discovery: Eureka
+## Endpoints
 
-API Gateway: Spring Cloud Gateway
+### User Service Endpoints
 
-Build Tool: Maven
+| Endpoint                  | Method | Description                      | Request Body/Params           |
+| :------------------------ | :----- | :------------------------------- | :---------------------------- |
+| `/api/users/`             | `POST` | Register a new user              | `User` object                 |
+| `/api/users/{email}`      | `GET`  | Retrieve user by email           | `email` (Path Variable)       |
+| `/api/users`              | `GET`  | Retrieve all users               | None                          |
+| `/api/users/{userId}/vehicles` | `GET`  | Retrieve vehicles associated with a user | `userId` (Path Variable) |
 
-Database Table Design    
+### Vehicle Service Endpoints
 
-User Table
+| Endpoint                  | Method | Description           | Request Body/Params             |
+| :------------------------ | :----- | :-------------------- | :------------------------------ |
+| `/api/vehicles/`          | `POST` | Add a new vehicle     | `VehicleRequest` object         |
+| `/api/vehicles/user/{userId}` | `GET`  | Retrieve vehicles by user ID | `userId` (Path Variable) |
 
-Vehicle Table
+---
 
+## Sequence Diagrams
 
+### User Registration
 
-Endpoints
+```mermaid
+sequenceDiagram
+    participant User
+    participant API Gateway
+    participant UserService
+    participant UserDB
 
-User Service
-
-Vehicle Service
-
-
-
-Sequence Diagram
-
-User Registration:
-
-User sends a POST request to /api/users/.
-
-User Service saves the user details in the database.
-
-Response is returned with the registered user details.
-
-Fetch User with Vehicles:
-
-User sends a GET request to /api/users/{userId}/vehicles.
-
-User Service fetches user details from the database.
-
-User Service calls Vehicle Service using Feign Client to fetch associated vehicles.
-
-Combined response is returned.
-
-
-
-Column Name | Data Type | Constraints | Description
-userId | BIGINT | Primary Key, Auto-Increment | Unique identifier for the user
-name | VARCHAR(255) | NOT NULL | Name of the user
-email | VARCHAR(255) | NOT NULL, UNIQUE | Email address of the user
-phone | VARCHAR(15) | NOT NULL | Phone number of the user
-address | VARCHAR(255) |  | Address of the user
-passwordHash | VARCHAR(255) | NOT NULL | Hashed password of the user
-
-Column Name | Data Type | Constraints | Description
-vehicleId | BIGINT | Primary Key, Auto-Increment | Unique identifier for the vehicle
-make | VARCHAR(255) | NOT NULL | Manufacturer of the vehicle
-
-Endpoint | Method | Description | Request Body/Params
-/api/users/ | POST | Register a new user | User object
-/api/users/{email} | GET | Retrieve user by email | email (Path Variable)
-/api/users | GET | Retrieve all users | None
-/api/users/{userId}/vehicles | GET | Retrieve vehicles associated with a user | userId (Path Variable)
-
-Endpoint | Method | Description | Request Body/Params
-/api/vehicles/ | POST | Add a new vehicle | VehicleRequest object
-/api/vehicles/user/{userId} | GET | Retrieve vehicles by user ID | userId (Path Variable)
-
+    User->>API Gateway: POST /api/users/ (User object)
+    API Gateway->>UserService: Route request
+    UserService->>UserService: Validate user data
+    UserService->>UserDB: Save user details
+    UserDB-->>UserService: User details saved
+    UserService-->>API Gateway: Response with registered user details
+    API Gateway-->>User: Response with registered user details
