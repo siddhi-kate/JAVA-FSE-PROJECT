@@ -13,6 +13,15 @@ This system is built using a microservices architecture, leveraging Spring Boot 
 ## Architecture
 
 The system is composed of the following microservices:
+
+### User Service
+
+* **Description**: Handles all user-related operations, including registration, retrieval, and association with vehicles.
+* **Functionality**: Performs CRUD (Create, Read, Update, Delete) operations for users.
+* **Communication**: Communicates with the Vehicle Service using **Feign Client** to fetch vehicle-related data for a given user.
+
+### User Service Architecture
+
 ```mermaid
 graph TD
     A[API Gateway] --> B[User Service]
@@ -29,16 +38,29 @@ graph TD
     end
 ```
 
-### User Service
-
-* **Description**: Handles all user-related operations, including registration, retrieval, and association with vehicles.
-* **Functionality**: Performs CRUD (Create, Read, Update, Delete) operations for users.
-* **Communication**: Communicates with the Vehicle Service using **Feign Client** to fetch vehicle-related data for a given user.
-
 ### Vehicle Service
 
 * **Description**: Manages vehicle-related operations.
 * **Functionality**: Handles CRUD operations for vehicles and provides endpoints for retrieving vehicle details.
+
+### Vehicle Service Architecture
+
+```mermaid
+graph TD
+    A[API Gateway] --> B[Vehicle Service]
+    C[User Service] -- Feign Client --> B
+
+    B --> D[Vehicle Controller]
+    D --> E[Vehicle Service Layer]
+    E --> F[Vehicle Repository]
+    F --> G[H2 Database Vehicle]
+
+    subgraph Vehicle Service
+        D
+        E
+        F
+    end
+```
 
 ### Eureka Discovery Service
 
