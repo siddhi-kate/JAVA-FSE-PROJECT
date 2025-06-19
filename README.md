@@ -109,3 +109,22 @@ sequenceDiagram
     UserDB-->>UserService: User details saved
     UserService-->>API Gateway: Response with registered user details
     API Gateway-->>User: Response with registered user details
+```
+
+### Vehicle Registration
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API Gateway
+    participant VehicleService
+    participant VehicleDB
+
+    User->>API Gateway: POST /api/vehicles/ (VehicleRequest object)
+    API Gateway->>VehicleService: Route request
+    VehicleService->>VehicleService: Validate vehicle data
+    VehicleService->>VehicleDB: Save vehicle details
+    VehicleDB-->>VehicleService: Vehicle details saved
+    VehicleService-->>API Gateway: Response with added vehicle details
+    API Gateway-->>User: Response with added vehicle details
+```
