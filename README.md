@@ -20,7 +20,7 @@ graph TD
     C --> D[User Service Layer]
     D --> E[User Repository]
     E --> F[H2 Database User]
-    D -- Feign Client --> G Vehicle Service 
+    D -- Feign Client --> G[Vehicle Service] 
 
     subgraph User Service
         C
