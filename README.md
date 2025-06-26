@@ -5,22 +5,22 @@
 
 - [Project Overview](#project-overview)
 - [Architecture](#architecture)
-  - User Service
-  - [User Service Component Diagram](#user-service-component-diagram)
-  - [Vehicle Service](#vehicle-service)
-  - [Vehicle Service Component Diagram](#vehicle-service-component-diagram)
-  - [Eureka Discovery Service](#eureka-discovery-service)
-  - [API Gateway](#api-gateway)
+  - [User Service](#user-service)
+  - [User Service Component Diagram](#user-service-component-diagram)
+  - [Vehicle Service](#vehicle-service)
+  - [Vehicle Service Component Diagram](#vehicle-service-component-diagram)
+  - [Eureka Discovery Service](#eureka-discovery-service)
+  - [API Gateway](#api-gateway)
 - Technology Stack
 - Database Table Design
-  - User Table
+  - User Table
   - Vehicle Table
 - [Endpoints](#endpoints)
-  - User Service Endpoints
-  - Vehicle Service Endpoints
+  - User Service Endpoints
+  - Vehicle Service Endpoints
 - [Sequence Diagrams](#sequence-diagrams)
-  - User Registration
-  - Vehicle Registration
+  - User Registration
+  - Vehicle Registration
 - 🚀 How to Run the Vehicle Management System
 
 
