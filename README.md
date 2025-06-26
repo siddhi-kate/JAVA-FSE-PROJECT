@@ -165,3 +165,34 @@ sequenceDiagram
     VehicleService-->>API Gateway: Response with added vehicle details
     API Gateway-->>User: Response with added vehicle details
 ```
+
+
+## 🚀 How to Run the Vehicle Management System
+
+### Step-by-Step Commands
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/siddhi-kate/vehicle-management-system.git
+cd vehicle-management-system
+
+# 2. Build all services
+mvn clean install
+
+# 3. Run Eureka Discovery Service
+cd eureka-service
+mvn spring-boot:run
+
+# 4. Run API Gateway
+cd ../api-gateway
+mvn spring-boot:run
+
+# 5. Run User Service
+cd ../user-service
+mvn spring-boot:run
+
+# 6. Run Vehicle Service
+cd ../vehicle-service
+mvn spring-boot:run
+```
+
