@@ -1,3 +1,87 @@
+# 🛠️ User Service
+
+The **User Service** is a core microservice in the system responsible for managing user-related operations such as registration, retrieval, and vehicle association. It communicates with the **Vehicle Service** using a **Feign Client** to fetch vehicle data.
+
+---
+
+## 📦 Technology Stack
+
+- **Language**: Java
+- **Framework**: Spring Boot, Spring Cloud
+- **Database**: H2 (In-memory)
+- **Build Tool**: Maven
+- **Communication**: Feign Client
+- **Service Discovery**: Eureka
+
+---
+
+## 📊 Component Diagram
+```mermaid
+graph TD
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#bff,stroke:#333,stroke-width:2px
+    style E fill:#ffb,stroke:#333,stroke-width:2px
+    style F fill:#fbb,stroke:#333,stroke-width:2px
+ 
+    A[📡 API Gateway] --> B[🛠️ User Service]
+    B --> C[📂 Controller]
+    C --> D[⚙️ Service Layer]
+    D --> E[🗃️ Repository]
+    E --> F[🛢️ H2 Database - User]
+ 
+    subgraph User Service
+        C
+        D
+        E
+    end
+```
+
+
+## ✨ Key Features
+- **🔐 User Registration**
+    - Allows new users to sign up by providing personal details such as name, email, phone number, and address.
+
+- **👤 Profile Management**
+    - Enables users to view and update their profile information securely.
+
+- **📜 Service History Tracking**
+    - Maintains a record of vehicle-related services associated with each user, offering insights into past interactions and maintenance.
+
+- **🔗 Vehicle Association**
+    - Links users to their registered vehicles, enabling seamless access to vehicle data via Feign Client integration with the Vehicle Service.
+
+- **🔍 User Lookup**
+    - Supports searching users by email or listing all registered users for administrative or analytical purposes.
+
+## Database Table Design
+
+### User Table
+
+| Column Name  | Data Type    | Constraints                  | Description                         |
+| :----------- | :----------- | :--------------------------- | :---------------------------------- |
+| `userId`     | `BIGINT`     | Primary Key, Auto-Increment  | Unique identifier for the user      |
+| `name`       | `VARCHAR(255)` | NOT NULL                     | Name of the user                    |
+| `email`      | `VARCHAR(255)` | NOT NULL, UNIQUE             | Email address of the user           |
+| `phone`      | `VARCHAR(15)`  | NOT NULL                     | Phone number of the user            |
+| `address`    | `VARCHAR(255)` |                              | Address of the user                 |
+| `passwordHash` | `VARCHAR(255)` | NOT NULL                     | Hashed password of the user         |
+
+## Endpoints
+
+### User Service Endpoints
+
+| Endpoint                  | Method | Description                      | Request Body/Params           |
+| :------------------------ | :----- | :------------------------------- | :---------------------------- |
+| `/api/users/`             | `POST` | Register a new user              | `User` object                 |
+| `/api/users/{email}`      | `GET`  | Retrieve user by email           | `email` (Path Variable)       |
+| `/api/users`              | `GET`  | Retrieve all users               | None                          |
+| `/api/users/{userId}/vehicles` | `GET`  | Retrieve vehicles associated with a user | `userId` (Path Variable) |
+
+
+
+
 # Vehicle Management System
 
 
@@ -115,18 +199,6 @@ graph TD
 
 ---
 
-## Database Table Design
-
-### User Table
-
-| Column Name  | Data Type    | Constraints                  | Description                         |
-| :----------- | :----------- | :--------------------------- | :---------------------------------- |
-| `userId`     | `BIGINT`     | Primary Key, Auto-Increment  | Unique identifier for the user      |
-| `name`       | `VARCHAR(255)` | NOT NULL                     | Name of the user                    |
-| `email`      | `VARCHAR(255)` | NOT NULL, UNIQUE             | Email address of the user           |
-| `phone`      | `VARCHAR(15)`  | NOT NULL                     | Phone number of the user            |
-| `address`    | `VARCHAR(255)` |                              | Address of the user                 |
-| `passwordHash` | `VARCHAR(255)` | NOT NULL                     | Hashed password of the user         |
 
 #### Vehicle Table
 
@@ -142,16 +214,7 @@ graph TD
 
 ---
 
-## Endpoints
 
-### User Service Endpoints
-
-| Endpoint                  | Method | Description                      | Request Body/Params           |
-| :------------------------ | :----- | :------------------------------- | :---------------------------- |
-| `/api/users/`             | `POST` | Register a new user              | `User` object                 |
-| `/api/users/{email}`      | `GET`  | Retrieve user by email           | `email` (Path Variable)       |
-| `/api/users`              | `GET`  | Retrieve all users               | None                          |
-| `/api/users/{userId}/vehicles` | `GET`  | Retrieve vehicles associated with a user | `userId` (Path Variable) |
 
 #### Vehicle Service Endpoints
 
