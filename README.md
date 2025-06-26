@@ -1,5 +1,29 @@
 # Vehicle Management System
 
+
+## 📚 Table of Contents
+
+- [Project Overview](#project-overview)
+- [Architecture](#architecture)
+  - User Service
+  - [User Service Component Diagram](#user-service-component-diagram)
+  - [Vehicle Service](#vehicle-service)
+  - [Vehicle Service Component Diagram](#vehicle-service-component-diagram)
+  - [Eureka Discovery Service](#eureka-discovery-service)
+  - [API Gateway](#api-gateway)
+- Technology Stack
+- Database Table Design
+  - User Table
+  - Vehicle Table
+- [Endpoints](#endpoints)
+  - User Service Endpoints
+  - Vehicle Service Endpoints
+- [Sequence Diagrams](#sequence-diagrams)
+  - User Registration
+  - Vehicle Registration
+- 🚀 How to Run the Vehicle Management System
+
+
 The Vehicle Management System is a microservices-based application designed to manage users and their associated vehicles. It comprises several interconnected services that work together to provide a comprehensive solution for vehicle and user management.
 
 ---
@@ -20,17 +44,23 @@ The system is composed of the following microservices:
 * **Functionality**: Performs CRUD (Create, Read, Update, Delete) operations for users.
 * **Communication**: Communicates with the Vehicle Service using **Feign Client** to fetch vehicle-related data for a given user.
 
-### User Service Architecture
+### User Service Component Diagram
 
 ```mermaid
 graph TD
-    A[API Gateway] --> B[User Service]
-    B --> C[User Controller]
-    C --> D[User Service Layer]
-    D --> E[User Repository]
-    E --> F[H2 Database User]
-    D -- Feign Client --> G[Vehicle Service] 
-
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#bff,stroke:#333,stroke-width:2px
+    style E fill:#ffb,stroke:#333,stroke-width:2px
+    style F fill:#fbb,stroke:#333,stroke-width:2px
+ 
+    A[📡 API Gateway] --> B[🛠️ User Service]
+    B --> C[📂 Controller]
+    C --> D[⚙️ Service Layer]
+    D --> E[🗃️ Repository]
+    E --> F[🛢️ H2 Database - User]
+ 
     subgraph User Service
         C
         D
@@ -43,7 +73,7 @@ graph TD
 * **Description**: Manages vehicle-related operations.
 * **Functionality**: Handles CRUD operations for vehicles and provides endpoints for retrieving vehicle details.
 
-### Vehicle Service Architecture
+### Vehicle Service Component Diagram
 
 ```mermaid
 graph TD
@@ -98,13 +128,17 @@ graph TD
 | `address`    | `VARCHAR(255)` |                              | Address of the user                 |
 | `passwordHash` | `VARCHAR(255)` | NOT NULL                     | Hashed password of the user         |
 
-### Vehicle Table
+#### Vehicle Table
 
-| Column Name | Data Type    | Constraints                 | Description                       |
-| :---------- | :----------- | :-------------------------- | :-------------------------------- |
-| `vehicleId` | `BIGINT`     | Primary Key, Auto-Increment | Unique identifier for the vehicle |
-| `make`      | `VARCHAR(255)` | NOT NULL                    | Manufacturer of the vehicle       |
-| *(Additional vehicle details like model, year, etc., would be added here)* | | | |
+| Column Name         | Data Type      | Constraints                 | Description                             |
+|---------------------|----------------|------------------------------|-----------------------------------------|
+| `vehicleId`         | `BIGINT`       | Primary Key, Auto-Increment | Unique identifier for the vehicle       |
+| `userId`            | `BIGINT`       | Foreign Key, NOT NULL       | ID of the user who owns the vehicle     |
+| `make`              | `VARCHAR(255)` | NOT NULL                    | Manufacturer of the vehicle             |
+| `model`             | `VARCHAR(255)` | NOT NULL                    | Model name of the vehicle               |
+| `year`              | `INT`          | NOT NULL                    | Manufacturing year of the vehicle       |
+| `registrationNumber`| `VARCHAR(50)`  | NOT NULL, UNIQUE            | Vehicle's registration number           |
+
 
 ---
 
@@ -119,12 +153,15 @@ graph TD
 | `/api/users`              | `GET`  | Retrieve all users               | None                          |
 | `/api/users/{userId}/vehicles` | `GET`  | Retrieve vehicles associated with a user | `userId` (Path Variable) |
 
-### Vehicle Service Endpoints
+#### Vehicle Service Endpoints
 
-| Endpoint                  | Method | Description           | Request Body/Params             |
-| :------------------------ | :----- | :-------------------- | :------------------------------ |
-| `/api/vehicles/`          | `POST` | Add a new vehicle     | `VehicleRequest` object         |
-| `/api/vehicles/user/{userId}` | `GET`  | Retrieve vehicles by user ID | `userId` (Path Variable) |
+| Endpoint                                | Method | Description                        | Request Body/Params         |
+|-----------------------------------------|--------|------------------------------------|------------------------------|
+| `/api/vehicles/`                        | POST   | Add a new vehicle                  | `VehicleRequest` object      |
+| `/api/vehicles/user/{userId}`           | GET    | Retrieve vehicles by user ID       | `userId` (Path Variable)     |
+| `/api/vehicles/{vehicleId}`             | GET    | Retrieve vehicle by vehicle ID     | `vehicleId` (Path Variable)  |
+| `/api/vehicles/{vehicleId}`             | PUT    | Update vehicle details             | `VehicleRequest` object      |
+| `/api/vehicles/{vehicleId}`             | DELETE | Delete a vehicle                   | `vehicleId` (Path Variable)  |
 
 ---
 
