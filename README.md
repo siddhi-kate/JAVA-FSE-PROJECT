@@ -1,6 +1,6 @@
-## 📚 Table of Contents
+## Table of Contents
 
-- [User Service](#user-service)
+- [Overview](#overview)
 - [Component Diagram](#component-diagram)
 - [Key Features](#key-features)
 - [Database Table Design](#database-table-design)
@@ -8,7 +8,7 @@
 - [Sequence Diagrams](#sequence-diagrams)
 - [Swagger Documentation](#swagger-documentation)
 
-# 🛠️ User Service
+## Overview
 
 The **User Service** is a core microservice in the system responsible for managing user-related operations such as registration, retrieval, and vehicle association. It communicates with the **Vehicle Service** using a **Feign Client** to fetch vehicle data.
 
