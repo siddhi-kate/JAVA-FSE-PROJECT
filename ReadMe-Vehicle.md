@@ -1,6 +1,8 @@
-## 📚 Table of Contents
+# Vehicle Service
 
-- [Vehicle Service](#vehicle-service)
+## Table of Contents
+
+- [Overview](#overview)
 - [Component Diagram](#component-diagram)
 - [Key Features](#key-features)
 - [Database Table Design](#database-table-design)
@@ -10,9 +12,52 @@
 
 ---
 
-# 🚗 Vehicle Service
+## Overview
 
 The **Vehicle Service** is a core microservice in the system responsible for managing vehicle-related operations such as creation, retrieval, update, and deletion. It integrates with the **User Service** via Feign Client to fetch user-specific vehicle data.
+
+---
+
+## Component Diagram
+
+```mermaid
+graph TD
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#bff,stroke:#333,stroke-width:2px
+    style E fill:#ffb,stroke:#333,stroke-width:2px
+    style F fill:#fbb,stroke:#333,stroke-width:2px
+ 
+    A[📡 API Gateway] --> B[🛠️ Vehicle Service]
+    B --> C[📂 Controller]
+    C --> D[⚙️ Service Layer]
+    D --> E[🗃️ Repository]
+    E --> F[🛢️ H2 Database - Vehicle]
+ 
+    subgraph Vehicle Service
+        C
+        D
+        E
+    end
+```
+---
+
+## Key Features
+- **Vehicle Registration**
+    - Allows users to register new vehicles with details like make, model, year, and registration number.
+
+- **Vehicle Management**
+    - Supports updating and deleting vehicle records.
+
+- **Vehicle Lookup**
+    - Enables retrieval of vehicle details by vehicle ID or user ID.
+
+- **User-Vehicle Association**
+    - Associates vehicles with users using foreign key relationships.
+
+- **Feign Integration**
+    - Communicates with the User Service to fetch user-related data.
 
 ---
 
