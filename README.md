@@ -1,21 +1,20 @@
+## 📚 Table of Contents
+
+- [User Service](#user-service)
+- [Component Diagram](#component-diagram)
+- [Key Features](#key-features)
+- [Database Table Design](#database-table-design)
+- [Endpoints](#endpoints)
+- [Sequence Diagrams](#sequence-diagrams)
+- [Swagger Documentation](#swagger-documentation)
+
 # 🛠️ User Service
 
 The **User Service** is a core microservice in the system responsible for managing user-related operations such as registration, retrieval, and vehicle association. It communicates with the **Vehicle Service** using a **Feign Client** to fetch vehicle data.
 
 ---
 
-## 📦 Technology Stack
-
-- **Language**: Java
-- **Framework**: Spring Boot, Spring Cloud
-- **Database**: H2 (In-memory)
-- **Build Tool**: Maven
-- **Communication**: Feign Client
-- **Service Discovery**: Eureka
-
----
-
-## 📊 Component Diagram
+## Component Diagram
 ```mermaid
 graph TD
     style A fill:#f9f,stroke:#333,stroke-width:2px
@@ -39,20 +38,20 @@ graph TD
 ```
 
 
-## ✨ Key Features
-- **🔐 User Registration**
+## Key Features
+- **User Registration**
     - Allows new users to sign up by providing personal details such as name, email, phone number, and address.
 
-- **👤 Profile Management**
+- **Profile Management**
     - Enables users to view and update their profile information securely.
 
-- **📜 Service History Tracking**
+- **Service History Tracking**
     - Maintains a record of vehicle-related services associated with each user, offering insights into past interactions and maintenance.
 
-- **🔗 Vehicle Association**
+- **Vehicle Association**
     - Links users to their registered vehicles, enabling seamless access to vehicle data via Feign Client integration with the Vehicle Service.
 
-- **🔍 User Lookup**
+- **User Lookup**
     - Supports searching users by email or listing all registered users for administrative or analytical purposes.
 
 ## Database Table Design
@@ -78,6 +77,40 @@ graph TD
 | `/api/users/{email}`      | `GET`  | Retrieve user by email           | `email` (Path Variable)       |
 | `/api/users`              | `GET`  | Retrieve all users               | None                          |
 | `/api/users/{userId}/vehicles` | `GET`  | Retrieve vehicles associated with a user | `userId` (Path Variable) |
+
+## Sequence Diagrams
+
+### User Registration
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant API Gateway
+    participant UserService
+    participant UserDB
+
+    User->>API Gateway: POST /api/users/ (User object)
+    API Gateway->>UserService: Route request
+    UserService->>UserService: Validate user data
+    UserService->>UserDB: Save user details
+    UserDB-->>UserService: User details saved
+    UserService-->>API Gateway: Response with registered user details
+    API Gateway-->>User: Response with registered user details
+```
+## Swagger Documentation
+The User Service provides interactive API documentation using Swagger.
+
+### Access Swagger UI
+Swagger UI for User Service
+    - http://localhost:8082/swagger-ui/index.html
+
+
+
+
+
+
+
+
 
 
 
@@ -228,25 +261,7 @@ graph TD
 
 ---
 
-## Sequence Diagrams
 
-### User Registration
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant API Gateway
-    participant UserService
-    participant UserDB
-
-    User->>API Gateway: POST /api/users/ (User object)
-    API Gateway->>UserService: Route request
-    UserService->>UserService: Validate user data
-    UserService->>UserDB: Save user details
-    UserDB-->>UserService: User details saved
-    UserService-->>API Gateway: Response with registered user details
-    API Gateway-->>User: Response with registered user details
-```
 
 ### Vehicle Registration
 
